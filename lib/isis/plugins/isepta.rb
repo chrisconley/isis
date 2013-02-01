@@ -4,8 +4,6 @@ require 'httparty'
 class Isis::Plugin::Isepta < Isis::Plugin::Base
   # TODO:
   # always return the "now" schedule
-  # Allow fuzzy matching on stations
-  # Get current trains
 
   REGEX = /^\W*\@isepta\b/i
   def respond_to_msg?(msg, speaker)
@@ -16,23 +14,38 @@ class Isis::Plugin::Isepta < Isis::Plugin::Base
   def response
     @msg = @msg.downcase
     @msg = @msg.gsub(REGEX, '')
-    from, to = @msg.split(' to ').map{|s| s.strip.upcase}
-    response = HTTParty.get("http://isepta-api-v2.herokuapp.com/trains.json?to=#{to}&from=#{from}&day=wk")
+    from, to = @msg.split(' to ').map{|s| find_station(s)}
+    response = HTTParty.get("http://isepta-api-v2.herokuapp.com/trains.json?to=#{to}&from=#{from}&day=#{ScheduleType.current_type}")
 
     if response.to_a.size > 0
       train_view = HTTParty.get('http://www3.septa.org/hackathon/TrainView/', :options => { :headers => { 'ContentType' => 'application/json' } })
-      trains = response.map{|t| {departs_at: Time.parse(t['departs_at']), number: t['number']} }
+      trains = response.map{|t| {departs_at: Time.strptime(t['departs_at'],"%H:%M:%S"), number: t['number']} rescue nil}.compact
       trains = trains.select{|t| t[:departs_at] > (Time.now)}[0..2]
 
       times = trains.map do |train|
         tv_train = train_view.select{|t| t['trainno'] == train[:number]}.first
         minutes_late = tv_train && tv_train['late']
-        train[:departs_at].strftime("%I:%M%P (#{minutes_late || "?"})")
+        minutes_late = " (#{minutes_late})" if minutes_late
+        train[:departs_at].strftime("%-I:%M%P#{minutes_late}")
       end.join(", ")
-      "Departing at: #{times}"
+      "#{STATION_NAMES.invert[from]} to #{STATION_NAMES.invert[to]} departing at: #{times}"
     else
       "Whoops! Couldn't find trains for '#{@msg}'"
     end
+  end
+
+  def find_station(param)
+    param = param.strip.upcase
+    return param if STATION_NAMES.values.include?(param)
+    station_name = STATION_NAMES.keys.select{|name| name.match(/#{param}/i)}.first
+    return STATION_NAMES[station_name] rescue 'none'
+  end
+end
+
+module ScheduleType
+  def self.current_type
+    date = Time.now.to_date
+    [0, 6].include?(date.wday) ? date.strftime("%a").downcase : "wk"
   end
 end
 

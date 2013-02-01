@@ -7,7 +7,7 @@ hipchat:
   jid: <%= ENV['HIPCHAT_JID'] %>
   name: <%= ENV['HIPCHAT_NAME'] %>
   password: <%= ENV['HIPCHAT_PASSWORD'] %>
-  history: 3 # num of history fields to request
+  history: 0 # num of history fields to request
   rooms:
     - 33694_isepta@conf.hipchat.com
 
