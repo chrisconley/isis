@@ -19,15 +19,4 @@ bot:
 
 ## PLUGIN SETTINGS ##
 enabled_plugins:
-  - HipRepeater
-  - RandomResponses
-
-  - Archer
-  - Bash
-  - Futurama
-  - LikeABoss
-  - Olaf
-  - PennyArcade
-  - QuickMeme
-  - WalMart
-  - XKCD
+  - Isepta
