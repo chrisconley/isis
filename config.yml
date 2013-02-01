@@ -1,0 +1,35 @@
+## SERVICES ##
+# Supported values: hipchat, campfire, hipchat-smackr
+service: hipchat
+
+## HIPCHAT SETTINGS ##
+hipchat:
+  jid: <%= ENV['HIPCHAT_JID'] %>
+  name: <%= ENV['HIPCHAT_NAME'] %>
+  password: <%= ENV['HIPCHAT_PASSWORD'] %>
+  history: 3 # num of history fields to request
+  rooms:
+    - DDDD_room_name@conf.hipchat.com
+    # - DDDD_second_room_name@conf.hipchat.com
+
+## BOT SETTINGS ##
+# hello/goodbye messages can either be the name of a plugin, or a string
+# the plugin must be enabled, and not all plugins support this type of message
+bot:
+  hello: 'Mainframe: ONLINE'
+  goodbye: NO CARRIER
+
+## PLUGIN SETTINGS ##
+enabled_plugins:
+  - HipRepeater
+  - RandomResponses
+
+  - Archer
+  - Bash
+  - Futurama
+  - LikeABoss
+  - Olaf
+  - PennyArcade
+  - QuickMeme
+  - WalMart
+  - XKCD
