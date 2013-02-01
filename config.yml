@@ -9,15 +9,13 @@ hipchat:
   password: <%= ENV['HIPCHAT_PASSWORD'] %>
   history: 3 # num of history fields to request
   rooms:
-    - DDDD_room_name@conf.hipchat.com
-    # - DDDD_second_room_name@conf.hipchat.com
+    - 33694_isepta@conf.hipchat.com
 
 ## BOT SETTINGS ##
 # hello/goodbye messages can either be the name of a plugin, or a string
 # the plugin must be enabled, and not all plugins support this type of message
 bot:
-  hello: 'Mainframe: ONLINE'
-  goodbye: NO CARRIER
+  hello: 'All Aboard!'
 
 ## PLUGIN SETTINGS ##
 enabled_plugins:

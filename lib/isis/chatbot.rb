@@ -15,7 +15,7 @@ module Isis
     end
 
     def load_config
-      @config = YAML::load(ERB(File.read(File.join(ROOT_FOLDER, 'config.yml'))))
+      @config = YAML::load(ERB.new(File.read(File.join(ROOT_FOLDER, 'config.yml'))).result)
     end
 
     def load_plugins
