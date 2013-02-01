@@ -1,4 +1,5 @@
 require 'yaml'
+require 'erb'
 require 'singleton'
 require 'isis/plugins'
 
@@ -14,7 +15,7 @@ module Isis
     end
 
     def load_config
-      @config = YAML::load(File.read(File.join(ROOT_FOLDER, 'config.yml')))
+      @config = YAML::load(ERB(File.read(File.join(ROOT_FOLDER, 'config.yml'))))
     end
 
     def load_plugins
