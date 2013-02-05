@@ -9,7 +9,7 @@ hipchat:
   password: <%= ENV['HIPCHAT_PASSWORD'] %>
   history: 0 # num of history fields to request
   rooms:
-    - 33694_isepta@conf.hipchat.com
+    - <%= ENV['HIPCHAT_ROOM'] %>
 
 ## BOT SETTINGS ##
 # hello/goodbye messages can either be the name of a plugin, or a string
